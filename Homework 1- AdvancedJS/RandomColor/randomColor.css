@@ -1,0 +1,9 @@
+body {
+   position: relative;  
+}
+
+#colorName {
+    position: absolute;
+    margin-top: 20%;
+    margin-left: 45%;
+}
