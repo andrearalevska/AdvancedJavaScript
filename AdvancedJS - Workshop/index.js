@@ -137,6 +137,7 @@ function generateTableSpaceShip (info){
 spaceShip.addEventListener("click", function(){
     currentPage = 1;
     selectedAPI = "spaceShip";
+    
     table.innerHTML="";
     callApiShip("https://swapi.dev/api/starships/?page=1")
     next.style.visibility = "visible";
