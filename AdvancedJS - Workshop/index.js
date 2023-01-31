@@ -4,6 +4,7 @@ let next = document.getElementById("next");
 let previous = document.getElementById("previous");
 let table = document.getElementById("table")
 let currentPage = 1;
+let selectedAPI = "";
 
 
 function callApiPerson (link){
@@ -65,33 +66,13 @@ function generateTablePerson (info){
 }
 
 person.addEventListener("click", function(){
+    currentPage = 1;
+    selectedAPI= "person";
     table.innerHTML="";
     next.style.visibility = "visible";
+    previous.style.visibility = "hidden";
     callApiPerson("https://swapi.dev/api/people/?page=1");
-
-    next.addEventListener("click", function(){
-        currentPage++
-        previous.style.visibility= "visible";
-        table.innerHTML="";
-        callApiPerson("https://swapi.dev/api/people/?page=" + currentPage)
-
-        if(currentPage == 9){
-            next.style.visibility="hidden";
-        }
-    })
-
-    previous.addEventListener("click", function(){
-        currentPage--
-        next.style.visibility= "visible";
-        table.innerHTML="";
-        callApiPerson("https://swapi.dev/api/people/?page=" + currentPage)
-
-        if(currentPage == 1){
-            previous.style.visibility= "hidden";
-        }
-    
-    })
-        
+       
 })
 
 
@@ -132,7 +113,7 @@ function generateTableSpaceShip (info){
         let shipModel = ship.model;
         let shipManufacturer = ship.manufacturer;
         let shipCost= ship.cost_in_credits;
-        let shipCapacity = ship.passengers
+        let shipCapacity = capacity(ship.crew, ship.passengers);
         let shipClass = ship.starship_class; 
 
         let table = document.getElementById("table");
@@ -154,33 +135,97 @@ function generateTableSpaceShip (info){
 }
 
 spaceShip.addEventListener("click", function(){
+    currentPage = 1;
+    selectedAPI = "spaceShip";
     table.innerHTML="";
     callApiShip("https://swapi.dev/api/starships/?page=1")
     next.style.visibility = "visible";
+    previous.style.visibility = "hidden";
     
-    next.addEventListener("click", function(){
-        currentPage++
-        previous.style.visibility= "visible";
-        table.innerHTML="";
-        callApiShip("https://swapi.dev/api/starships/?page=" + currentPage)
+})
 
-        if(currentPage== 4){
-            next.style.visibility="hidden";
+next.addEventListener("click", function(){
+    currentPage++;
+    previous.style.visibility= "visible";
+    table.innerHTML="";
+
+    if(selectedAPI === "person"){
+        callApiPerson("https://swapi.dev/api/people/?page=" + currentPage);
+
+        if(currentPage === 9){
+            next.style.visibility = "hidden";
         }
-    })
-
-    previous.addEventListener("click", function(){
-        currentPage--
-        next.style.visibility= "visible";
-        table.innerHTML="";
-        callApiShip("https://swapi.dev/api/starships/?page=" + currentPage)
-
-        if(currentPage== 1){
-            previous.style.visibility="hidden";
-        }
+    }
     
-    })
+    else if(selectedAPI === "spaceShip"){
+        callApiShip("https://swapi.dev/api/starships/?page=" + currentPage)
+        
+        if(currentPage === 4){
+            next.style.visibility = "hidden";
+        }
+    }
+
+})
+
+previous.addEventListener("click", function(){
+    currentPage--;
+    next.style.visibility= "visible";
+    table.innerHTML="";
+    
+    if(selectedAPI === "person"){
+        callApiPerson("https://swapi.dev/api/people/?page=" + currentPage);
+    }
+    
+    else if(selectedAPI === "spaceShip"){
+        callApiShip("https://swapi.dev/api/starships/?page=" + currentPage)
+        
+        if(currentPage === 1){
+            previous.style.visibility = "hidden";
+        }    
+    }
+
 })
 
 
-
+function capacity (crew, passengers) {
+    let result = 0;
+   
+  if(crew.includes(",")){
+        if(passengers === "n/a" || passengers === "unknown"){
+            result = parseInt(crew.replaceAll(",","")) + 0;
+        }
+        else if(passengers.includes(",")){
+            result = parseInt(crew.replaceAll(",","")) + parseInt(passengers.replaceAll(",",""));
+        }
+        else {
+            result = parseInt(crew.replaceAll(",","")) + parseInt(passengers);
+        }
+    }
+    else if(passengers.includes(",")){
+        if(crew === "n/a" || crew === "unknown"){
+            result = parseInt(passengers.replaceAll(",","")) + 0;
+        }
+        else if(crew.includes(",")){
+            result = parseInt(crew.replaceAll(",","")) + parseInt(passengers.replaceAll(",",""));
+        }
+        else {
+            result = parseInt(passengers.replaceAll(",","")) + parseInt(crew);
+        }
+    }
+    else if (crew.includes("-")){
+        result = parseInt(crew.split("-").pop()) + parseInt(passengers);
+    }
+    else if (passengers.includes("-")){
+        result = parseInt(passengers.split("-").pop()) + parseInt(crew);
+    }
+    else if(crew === "n/a" || crew === "unknown"){
+        result = 0 + parseInt(passengers);
+    }
+    else if(passengers === "n/a" || passengers === "unknown"){
+        result = 0 + parseInt(crew);
+    }
+    else {
+        result = parseInt(crew) + parseInt(passengers); 
+    }
+    return result;
+}
