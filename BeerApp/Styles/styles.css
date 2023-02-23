@@ -1,0 +1,82 @@
+#hpimage {
+    filter: blur(5px);
+    width: 100%;
+    height: auto;
+}
+.jumbotron {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#header{
+    position: absolute;
+    margin: auto;
+    background-color: rgba(0,0,0,0.5);
+    color: whitesmoke;
+    text-align: center;
+
+}
+#paragraph{
+    position: absolute;
+    bottom: 30%;
+    left: auto;
+    background-color: rgba(0,0,0,0.5);
+    color: whitesmoke;
+   
+}
+#dropdownBtn{
+    display:flex;
+    justify-content:space-evenly;
+
+}
+#beerPostsContainer {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+}
+
+.test {
+    object-fit: contain;
+    width: 200px;
+    height: 300px;
+    padding: 10px;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    width: max-content;
+
+}
+
+#beerPostsContainer > div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+
+}
+#MDbtn {
+    margin: auto;
+    width: 150px;
+}
+
+
+#elementMD {
+    background-color: rgb(239, 239, 239);
+    display:flex;
+    flex-direction: row;
+}
+#randomContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+#pagContainer{
+    display: flex;
+    justify-content: center;
+}
